@@ -1,0 +1,24 @@
+{
+  "name": "opencourt",
+  "version": "1.0.0",
+  "description": "Find a court. Join a game. or Play more. Search less.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LauraV-702/OpenCourt.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/LauraV-702/OpenCourt/issues"
+  },
+  "homepage": "https://github.com/LauraV-702/OpenCourt#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
