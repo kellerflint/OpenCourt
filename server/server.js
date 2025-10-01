@@ -6,10 +6,10 @@ const PORT = 3000;
 
 // MySQL connection configuration
 const db = mysql.createConnection({
-  host: 'localhost',     // or your MySQL host
+  host: '147.182.229.133',     // or your MySQL host
   user: 'root',          // your MySQL username
-  password: 'password',  // your MySQL password
-  database: 'testdb'     // the database to connect to
+  password: 'blue123',  // your MySQL password
+  database: 'openCourt'     // the database to connect to
 });
 
 // Connect to MySQL
