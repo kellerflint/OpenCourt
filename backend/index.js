@@ -12,7 +12,6 @@ const db = mysql.createConnection({
   database: "opencourt"
 });
 
-
 // Try to connect to MySQL, but don’t block server startup
 db.connect((err) => {
   if (err) {
