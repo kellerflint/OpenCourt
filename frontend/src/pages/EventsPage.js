@@ -1,28 +1,37 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Container, Typography, Button, List, ListItem, ListItemText } from "@mui/material";
 
 export default function EventsPage({ events }) {
   return (
-    <div style={{ textAlign: "center", padding: "2rem" }}>
-      <h1>Available Events</h1>
+    <Container maxWidth="sm" sx={{ mt: 6 }}>
+      <Typography variant="h4" gutterBottom align="center">
+        Available Events
+      </Typography>
 
       {events.length === 0 ? (
-        <p>No events yet. Create one!</p>
+        <Typography variant="body1" align="center">
+          No events yet. Create one!
+        </Typography>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0 }}>
+        <List>
           {events.map((event, index) => (
-            <li key={index} style={{ margin: "1rem 0" }}>
-              <strong>{event.sport}</strong> at {event.eventLocation}
-            </li>
+            <ListItem key={index} divider>
+              <ListItemText primary={`${event.sport} @ ${event.eventLocation}`} />
+            </ListItem>
           ))}
-        </ul>
+        </List>
       )}
 
-      <div style={{ marginTop: "2rem" }}>
-        <Link to="/">
-          <button>Back to Home</button>
-        </Link>
-      </div>
-    </div>
+      <Button
+        component={Link}
+        to="/"
+        variant="outlined"
+        color="primary"
+        sx={{ display: "block", mt: 4, mx: "auto" }}
+      >
+        Back to Home
+      </Button>
+    </Container>
   );
 }

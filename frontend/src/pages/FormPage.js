@@ -1,43 +1,44 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Container, Typography, TextField, Button, Stack } from "@mui/material";
 
 export default function FormPage({ addEvent }) {
   const [sport, setSport] = useState("");
-  const [eventLocation, setEventLocation] = useState(""); 
+  const [eventLocation, setEventLocation] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Add to global events
     const newEvent = { sport, eventLocation };
     addEvent(newEvent);
-
-    navigate("/confirmation", {
-      state: { eventName: sport, eventLocation: eventLocation },
-    });
+    navigate("/confirmation", { state: { eventName: sport, eventLocation } });
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "2rem" }}>
-      <h1>Create an Event</h1>
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem", maxWidth: "300px", margin: "0 auto" }}>
-        <input
-          type="text"
-          value={sport}
-          onChange={(e) => setSport(e.target.value)}
-          placeholder="Enter sport (e.g. Tennis, Basketball)"
-          required
-        />
-        <input
-          type="text"
-          value={eventLocation}
-          onChange={(e) => setEventLocation(e.target.value)} 
-          placeholder="Enter location"
-          required
-        />
-        <button type="submit">Submit</button>
+    <Container maxWidth="sm" sx={{ mt: 6 }}>
+      <Typography variant="h4" gutterBottom align="center">
+        Create an Event
+      </Typography>
+
+      <form onSubmit={handleSubmit}>
+        <Stack spacing={3}>
+          <TextField
+            label="Sport"
+            value={sport}
+            onChange={(e) => setSport(e.target.value)}
+            required
+          />
+          <TextField
+            label="Location"
+            value={eventLocation}
+            onChange={(e) => setEventLocation(e.target.value)}
+            required
+          />
+          <Button type="submit" variant="contained" color="primary">
+            Submit
+          </Button>
+        </Stack>
       </form>
-    </div>
+    </Container>
   );
 }

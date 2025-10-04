@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Container, Typography, Button, Stack } from "@mui/material";
 
 export default function ConfirmationPage() {
   const location = useLocation();
@@ -7,20 +8,24 @@ export default function ConfirmationPage() {
   const { eventName, eventLocation } = location.state || {};
 
   return (
-    <div style={{ textAlign: "center", padding: "2rem" }}>
-      <h1>✅ Event Created!</h1>
-      <p>
+    <Container maxWidth="sm" sx={{ textAlign: "center", mt: 6 }}>
+      <Typography variant="h4" gutterBottom>
+        ✅ Event Created!
+      </Typography>
+      <Typography variant="body1" gutterBottom>
         {eventName && eventLocation
           ? `${eventName} at ${eventLocation} has been added.`
           : "Event has been added."}
-      </p>
+      </Typography>
 
-      <div style={{ marginTop: "1rem" }}>
-        <button onClick={() => navigate("/")}>Back to Home</button>
-        <button onClick={() => navigate("/events")} style={{ marginLeft: "1rem" }}>
+      <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 3 }}>
+        <Button onClick={() => navigate("/")} variant="outlined" color="primary">
+          Back to Home
+        </Button>
+        <Button onClick={() => navigate("/events")} variant="contained" color="secondary">
           View All Events
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Stack>
+    </Container>
   );
 }
