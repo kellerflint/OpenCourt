@@ -1,16 +1,17 @@
+import { createEvent } from "../api/events";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Typography, TextField, Button, Stack } from "@mui/material";
 
-export default function FormPage({ addEvent }) {
+export default function FormPage() {
   const [sport, setSport] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newEvent = { sport, eventLocation };
-    addEvent(newEvent);
+    await createEvent(newEvent);
     navigate("/confirmation", { state: { eventName: sport, eventLocation } });
   };
 

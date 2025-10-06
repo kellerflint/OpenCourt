@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Container, Typography, Button, List, ListItem, ListItemText } from "@mui/material";
+import { getEvents } from "../api/events.js";
 
-export default function EventsPage({ events }) {
+export default function EventsPage() {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    getEvents()
+      .then(setEvents)
+      .catch((err) => console.error("Error fetching events:", err));
+  }, []);
+
   return (
     <Container maxWidth="sm" sx={{ mt: 6 }}>
       <Typography variant="h4" gutterBottom align="center">
