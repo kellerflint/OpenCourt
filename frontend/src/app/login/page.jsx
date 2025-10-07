@@ -17,10 +17,23 @@ export default function LoginPage() {
       <div>
         <TextField
         required
-        id="outlined-required"
-        label="Required"
-        defaultValue="Hello World"
+        id="required"
+        label="required"
+        defaultValue="Email Address"
         />
+        <TextField
+        required
+        id="required"
+        label="required"
+        defaultValue="Password"
+        />
+        <TextField
+        required
+        id="required"
+        label="required"
+        defaultValue="Username"
+        />
+        
       </div>
     </Box>
   );
