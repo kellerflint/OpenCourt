@@ -7,12 +7,25 @@ export default function LoginPage() {
 
   const [mode, setMode] = useState("login");
 
+  //toggle function
+  function handleToggle() {
+    if (mode === "login") {
+      setMode("register");
+    } else {
+      setMode("login");
+    }
+  }
 
 
   // page 
   return (
     <Box component="main" sx={{ p: 3, maxWidth: 420, mx: "auto"}}>
-      <Typography variant="h5" gutterBottom>Login</Typography>
+  
+      {/* Page Title */}
+      <Typography variant="h5" gutterBottom>
+        {mode === "login" ? "Sign in" : "Create account"}
+      </Typography>
+
 
       <Box component="form" noValidate autoComplete='off'>
 
