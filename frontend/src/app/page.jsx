@@ -3,22 +3,18 @@
 import {Box, TextField, Button, Typography } from '@mui/material'
 
 export default function LoginPage() {
+// user effects! 
+
+  const [mode, setMode] = userState<"login" | "register">("login");
+
+
+
+  // page 
   return (
     <Box component="main" sx={{ p: 3, maxWidth: 420, mx: "auto"}}>
       <Typography variant="h5" gutterBottom>Login</Typography>
 
       <Box component="form" noValidate autoComplete='off'>
-
-        {/* Username */}
-        <TextField
-          label="Username"
-          type="text"
-          name="login-username"
-          fullWidth
-          margin="normal"
-          autoComplete="off"
-          inputProps={{ autoComplete: "off" }}
-        />
 
         {/* {Email Address} */}
         <TextField
