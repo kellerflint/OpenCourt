@@ -1,5 +1,5 @@
 "use client"
-
+import React, { useState } from "react";
 import {Box, TextField, Button, Typography } from '@mui/material'
 
 export default function LoginPage() {
@@ -28,6 +28,19 @@ export default function LoginPage() {
 
 
       <Box component="form" noValidate autoComplete='off'>
+
+        {/* Username (only for register mode) */}
+        {mode === "register" && (
+          <TextField
+            label="Username"
+            type="text"
+            name="login-username"
+            fullWidth
+            margin="normal"
+            autoComplete="off"
+            inputProps={{ autoComplete: "off" }}
+          />
+        )}
 
         {/* {Email Address} */}
         <TextField
