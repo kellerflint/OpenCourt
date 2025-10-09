@@ -8,6 +8,19 @@ export default function LoginPage() {
       <Typography variant="h5" gutterBottom>Login</Typography>
 
       <Box component="form" noValidate autoComplete='off'>
+
+        {/* Username */}
+        <TextField
+          label="Username"
+          type="text"
+          name="login-username"
+          fullWidth
+          margin="normal"
+          autoComplete="off"
+          inputProps={{ autoComplete: "off" }}
+        />
+
+        {/* {Email Address} */}
         <TextField
         label="Email"
         type="email"
@@ -16,6 +29,8 @@ export default function LoginPage() {
         autoComplete="off"
         inputProps={{ autoComplete: "off" }}
         />
+
+        {/* Password */}
         <TextField
           label="Password"
           type="password"
