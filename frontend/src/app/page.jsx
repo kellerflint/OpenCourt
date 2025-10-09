@@ -5,7 +5,7 @@ import {Box, TextField, Button, Typography } from '@mui/material'
 export default function LoginPage() {
 // user effects! 
 
-  const [mode, setMode] = userState<"login" | "register">("login");
+  const [mode, setMode] = useState("login");
 
 
 
