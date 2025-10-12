@@ -1,11 +1,12 @@
 "use client"
 import React, { useState } from "react";
-import {Box, TextField, Button, Typography } from '@mui/material'
+import {Box, TextField, Button, Typography, Alert } from '@mui/material'
 
 export default function LoginPage() {
 // user effects! 
 
   const [mode, setMode] = useState("login");
+  const [error, setError] = useState(null);
 
   //toggle function
   function handleToggle() {
@@ -34,7 +35,7 @@ export default function LoginPage() {
       console.log("Registering with:", username, email, password);
 
       //post to register
-      const res = await fetch("/api/newUser", {         
+      const res = await fetch("http://localhost:3001/api/newUser", {         
         method: "POST", 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, username, password }),
@@ -63,6 +64,8 @@ export default function LoginPage() {
       >
         {mode === "login" ? "Need an account? Register" : "Have an account? Sign in"}
       </Button>
+
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
       <Box component="form" noValidate autoComplete='off' onSubmit={handleSubmit}>
 
