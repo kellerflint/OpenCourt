@@ -34,7 +34,8 @@ export default function LoginPage() {
       console.log("Registering with:", username, email, password);
 
       //post to register
-      const res = await fetch("/api/users", {          
+      const res = await fetch("/api/newUser", {         
+        method: "POST", 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, username, password }),
       });
@@ -63,7 +64,7 @@ export default function LoginPage() {
         {mode === "login" ? "Need an account? Register" : "Have an account? Sign in"}
       </Button>
 
-      <Box component="form" noValidate autoComplete='off'>
+      <Box component="form" noValidate autoComplete='off' onSubmit={handleSubmit}>
 
         {/* Username (only for register mode) */}
         {mode === "register" && (
@@ -82,6 +83,7 @@ export default function LoginPage() {
         <TextField
         label="Email"
         type="email"
+        name = "email"
         fullWidth
         margin="normal"
         autoComplete="off"
@@ -92,6 +94,7 @@ export default function LoginPage() {
         <TextField
           label="Password"
           type="password"
+          name="password"
           fullWidth
           margin="normal"
           inputProps={{ autoComplete: "new-password" }}

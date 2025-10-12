@@ -1,10 +1,10 @@
-import {USER} from './db/db.js'
+import {User} from '../model/user.js'
 
 
 
 export async function createUser(email, username, password) {
   try {
-    const newUser = await USER.create({ email, username, password });
+    const newUser = await User.create({ email, username, password });
     console.log("New user created:", newUser.toJSON());
     return newUser;
   } catch (err) {
