@@ -27,6 +27,15 @@ export default function LoginPage() {
       </Typography>
 
 
+      <Button
+      variant="text"
+      size="small"
+      sx={{ p: 0, mb: 1 }}
+      onClick={handleToggle}
+      >
+        {mode === "login" ? "Need an account? Register" : "Have an account? Sign in"}
+      </Button>
+      
       <Box component="form" noValidate autoComplete='off'>
 
         {/* Username (only for register mode) */}
