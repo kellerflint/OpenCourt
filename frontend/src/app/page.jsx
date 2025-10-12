@@ -21,7 +21,21 @@ export default function LoginPage() {
   function handleSubmit(e){
     e.preventDefault(); // stop page reload
 
-    
+    const form = new FormData(e.currentTarget);
+    const email = form.get("email");
+    const password = form.get("password");
+    const username = form.get("login-username");
+
+    if(mode === "login"){
+      // post to login
+      console.log("Logging in with:", email, password);
+      
+    } else {
+      console.log("Registering with:", username, email, password);
+
+      //post to register
+    }
+
   }
 
 
