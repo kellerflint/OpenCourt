@@ -16,6 +16,14 @@ export default function LoginPage() {
     }
   }
 
+  //handle submit
+
+  function handleSubmit(e){
+    e.preventDefault(); // stop page reload
+
+    
+  }
+
 
   // page 
   return (
@@ -35,7 +43,7 @@ export default function LoginPage() {
       >
         {mode === "login" ? "Need an account? Register" : "Have an account? Sign in"}
       </Button>
-      
+
       <Box component="form" noValidate autoComplete='off'>
 
         {/* Username (only for register mode) */}
