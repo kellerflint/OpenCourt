@@ -7,6 +7,7 @@ export default function LoginPage() {
 
   const [mode, setMode] = useState("login");
   const [error, setError] = useState(null);
+  
 
   //toggle function
   function handleToggle() {
