@@ -34,13 +34,24 @@ export default function LoginPage() {
     } else {
       console.log("Registering with:", username, email, password);
 
-      //post to register
-      const res = await fetch("http://localhost:3001/api/newUser", {         
-        method: "POST", 
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, username, password }),
-      });
-      
+      try {
+        const res = await fetch("http://localhost:3001/api/newUser", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, username, password }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          // Show backend error 
+          setError(data.message || "Something went wrong.");
+        } else {
+          setSuccess("Account created successfully!");
+        }
+      } catch (err) {
+        setError("Network error. Please try again later.");
+      }
     }
 
   }
