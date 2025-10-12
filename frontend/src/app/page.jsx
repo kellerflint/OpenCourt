@@ -18,7 +18,7 @@ export default function LoginPage() {
 
   //handle submit
 
-  function handleSubmit(e){
+  async function handleSubmit(e){
     e.preventDefault(); // stop page reload
 
     const form = new FormData(e.currentTarget);
@@ -34,6 +34,11 @@ export default function LoginPage() {
       console.log("Registering with:", username, email, password);
 
       //post to register
+      const res = await fetch("/api/users", {          
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, username, password }),
+      });
+      
     }
 
   }
