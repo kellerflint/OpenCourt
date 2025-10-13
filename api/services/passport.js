@@ -24,3 +24,19 @@ passport.use(new LocalStrategy(
     }
   }
 ));
+
+
+//store user id in session persistantly 
+passport.serializeUser((user, done) => done(null, user.user_id));
+
+//returns the full user object!
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findByPk(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
+
+export default passport;

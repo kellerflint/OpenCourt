@@ -2,6 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import db, { initDB } from './db/db.js';            
 import routes from './routes/router.js';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import connectSession from "connect-session-sequelize";
+import sequelize from "./db/db.js";
 
 const app = express();
 const PORT = 3001;
