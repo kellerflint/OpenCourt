@@ -1,13 +1,15 @@
 "use client"
 import React, { useState } from "react";
 import {Box, TextField, Button, Typography, Alert } from '@mui/material'
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-// user effects! 
+// user effects! const router = useRouter();  
 
   const [mode, setMode] = useState("login");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const router = useRouter();
   
 
   //toggle function
@@ -47,10 +49,9 @@ export default function LoginPage() {
         }
 
     setSuccess("Login successful!");
-   
+    // navigate to /home
+    router.push("/home");
 
-    // redirect to /home
-    router.push("/home");         
   } catch (err) {
     setError("Network error. Please try again later.");
   }      
