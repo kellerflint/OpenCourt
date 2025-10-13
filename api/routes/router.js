@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import db from '../db/db.js';
+import * as controller from './../controller/controller.js';
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.json({ ok: true, name: 'OpenCourt API' });
-});
-
+router.get('/', controller.getAllGames);
+router.get('/courts/:sport', controller.getGamesBySport);
+router.get('/courts/:gameId', controller.getGameById);
 router.get('/new', (_req, res) => {
 
     res.render('new_entry_form', { title: 'New Submission Form' });
@@ -14,9 +14,9 @@ router.get('/new', (_req, res) => {
 
 router.get('/products/all', getAllcourts);
 
-router.post('/post', (req, res) => {
+router.post("/new", createGame);
   
-})
+
 
 
 

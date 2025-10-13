@@ -40,3 +40,13 @@ export const getGameById = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+  const createGame = async (req, res) => {
+  try {
+    const game = await Game.create(req.body);
+    res.status(201).json(game);
+  } catch (error) {
+    console.error("Error creating game:", error);
+    res.status(500).json({ error: "Failed to create new game" });
+  }
+};
