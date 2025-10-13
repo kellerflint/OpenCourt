@@ -7,6 +7,7 @@ export default function LoginPage() {
 
   const [mode, setMode] = useState("login");
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   
 
   //toggle function
@@ -30,11 +31,34 @@ export default function LoginPage() {
 
     if(mode === "login"){
       // post to login
-      console.log("Logging in with:", email, password);
+      setError(null); setSuccess(null);
+      try {
+        const res = await fetch("http://localhost:3001/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
       
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          setError(data.message || "Invalid credentials.");
+          return;
+        }
+
+    setSuccess("Login successful!");
+   
+
+    // redirect to /home
+    router.push("/home");         
+  } catch (err) {
+    setError("Network error. Please try again later.");
+  }      
     } else {
       console.log("Registering with:", username, email, password);
 
+
+    //new user Post
       try {
         const res = await fetch("http://localhost:3001/api/newUser", {
           method: "POST",
