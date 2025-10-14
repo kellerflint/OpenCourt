@@ -1,43 +1,58 @@
 import { NextResponse } from 'next/server';
 
+// This tells Next.js which routes to protect
+// Matches all routes EXCEPT:
+// - / (homepage)
+// - /api (backend stuff)
+// - /_next (Next.js files)
+// - images and other static files
 export const config = {
   matcher: [
-    '/new',
-    '/home',
-    '/new/:path*',
-    '/home/:path*'
+    '/((?!api|_next/static|_next/image|favicon.ico|$).*)'
   ]
 };
 
+// This function runs before letting users access protected pages
 export default async function middleware(req) {
+  // Get the cookies (we need these to check if user is logged in)
   const cookieHeader = req.headers.get('cookie') || '';
+  
+  // Our backend server url
   const backend = 'http://localhost:3001';
+  
+  // Get the page the user is trying to visit
   const path = req.nextUrl.pathname;
 
-  console.log(' Middleware Triggered');
-  console.log('Protected route accessed:', path);
-  console.log('Cookies present:', cookieHeader);
+  // Log stuff to help us debug
+  console.log('Checking auth for:', path);
+  console.log('Cookies we found:', cookieHeader);
 
   try {
+    // Ask backend if user is logged in
     const res = await fetch(`${backend}/api/auth/check`, {
       method: 'GET',
-      credentials: 'include',
+      credentials: 'include',  // Make sure to send cookies
       headers: {
-        cookie: cookieHeader
+        cookie: cookieHeader   // Pass the cookies to backend
       }
     });
 
+    // Get the response from backend
     const data = await res.json();
-    console.log('Auth check response:', data);
+    console.log('Backend says:', data);
 
+    // If user isn't logged in, send them to homepage
     if (!data.authenticated) {
-      console.log(' Not authenticated, redirecting to home');
+      console.log('Not logged in - sending to homepage');
       return NextResponse.redirect(new URL('/', req.url));
     }
 
+    // If we get here, user is logged in - let them through
+    console.log('User is logged in - allowing access');
     return NextResponse.next();
   } catch (err) {
-    console.error(' Auth check failed:', err);
+    // If something breaks, play it safe and send to homepage
+    console.log('Something went wrong:', err);
     return NextResponse.redirect(new URL('/', req.url));
   }
 }
