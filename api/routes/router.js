@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { createUser } from '../db/userCrud.js'
 import {User} from "../model/user.js";
+import passport from '../services/passport.js';   
 const router = Router();
 
 router.get('/', (_req, res) => {
@@ -30,36 +31,24 @@ router.post("/newUser", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+// LOGIN using passport local strategy and create a session
+router.post("/login", (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(401).json({ message: info?.message || "Invalid credentials" });
 
-  try {
-    
-    const record = await User.findOne({ where: { email } });
-
-    if (!record) {
-      return res.status(401).json({ message: "No account found with that email." });
-    }
-
-    
-    if (record.password !== password) {
-      return res.status(401).json({ message: "Incorrect password." });
-    }
-
-    console.log("Logged in:", record.username);
-
-    return res.status(200).json({
-      message: "Login successful!",
-      user: {
-        id: record.user_id ?? record.id,
-        username: record.username,
-        email: record.email,
-      },
+    req.login(user, (err) => {
+      if (err) return next(err);
+      return res.status(200).json({
+        message: "Login successful!",
+        user: {
+          id: user.user_id ?? user.id,
+          username: user.username,
+          email: user.email,
+        },
+      });
     });
-  } catch (err) {
-    console.error("Error during login:", err);
-    return res.status(500).json({ message: "Server error. Please try again later." });
-  }
+  })(req, res, next);
 });
 
 

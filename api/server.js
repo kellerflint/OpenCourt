@@ -1,11 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import  { initDB, sequelize } from './db/db.js';            
+import  { initDB } from './db/db.js';      
+import sequelize from './db/db.js';      
 import routes from './routes/router.js';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import connectSession from "connect-session-sequelize";
-import passport from './services/passport.js'         
+import passport from '../api/services/passport.js';      
 
 
 const app = express();

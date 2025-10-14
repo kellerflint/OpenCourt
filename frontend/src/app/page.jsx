@@ -31,31 +31,33 @@ export default function LoginPage() {
     const password = form.get("password");
     const username = form.get("login-username");
 
-    if(mode === "login"){
-      // post to login
-      setError(null); setSuccess(null);
-      try {
-        const res = await fetch("http://localhost:3001/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-      
-        });
+  if(mode === "login"){
+    // post to login
+    setError(null); setSuccess(null);
+    try {
+      // use credentials so browser accepts the session cookie sent by the server
+      const res = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include',               // <- important
+        body: JSON.stringify({ email, password }),
+      });
 
-        const data = await res.json();
-        if (!res.ok) {
-          setError(data.message || "Invalid credentials.");
-          return;
-        }
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.message || "Invalid credentials.");
+        return;
+      }
 
-    setSuccess("Login successful!");
-    // navigate to /home
-    router.push("/home");
+      setSuccess("Login successful!");
+      // navigate to /home
+      router.push("/home");
 
-  } catch (err) {
-    setError("Network error. Please try again later.");
+    } catch (err) {
+      setError("Network error. Please try again later.");
+    }
   }      
-    } else {
+  else {
       console.log("Registering with:", username, email, password);
 
 
