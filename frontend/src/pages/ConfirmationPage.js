@@ -2,11 +2,14 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Typography, Button, Stack } from "@mui/material";
 
+// This is the confirmation page, after an event is created 
+// displays event and location, buttons here will go back to home page or view all events
 export default function ConfirmationPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { eventName, eventLocation } = location.state || {};
 
+// Renders a the confirmation page with the nav buttons 
   return (
     <Container maxWidth="sm" sx={{ textAlign: "center", mt: 6 }}>
       <Typography variant="h4" gutterBottom>

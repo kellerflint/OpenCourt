@@ -1,9 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 // Middleware
 app.use(cors());
@@ -11,16 +12,17 @@ app.use(express.json());
 
 // MySQL connection
 const db = mysql.createConnection({
-  host: "165.232.141.1",
-  port: 3306,
-  user: "web_user",
-  password: "1234",
-  database: "opencourt"
+  host: process.env.DB_HOST,     
+  port: process.env.DB_PORT,    
+  user: process.env.DB_USER,     
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME 
 });
 
+// Connect to MySQL 
 db.connect((err) => {
   if (err) {
-    console.error("MySQL connection failed:", err.message);
+    console.error("MySQL connection failed.", err.message);
   } else {
     console.log("✅ Connected to MySQL!");
   }

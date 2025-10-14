@@ -7,8 +7,9 @@ export async function getEvents() {
   return res.json();
 }
 
-// Create a new event
+// Create a new event 
 export async function createEvent(eventData) {
+  // Send POST request with event data 
   const res = await fetch(`${API_URL}/events`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

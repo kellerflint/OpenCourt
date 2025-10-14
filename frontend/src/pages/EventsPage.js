@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Container, Typography, Button, List, ListItem, ListItemText } from "@mui/material";
 import { getEvents } from "../api/events.js";
 
+// Shows a list of all events fetched from the backend
 export default function EventsPage() {
   const [events, setEvents] = useState([]);
 
@@ -12,6 +13,7 @@ export default function EventsPage() {
       .catch((err) => console.error("Error fetching events:", err));
   }, []);
 
+// Displays and renders the list of events 
   return (
     <Container maxWidth="sm" sx={{ mt: 6 }}>
       <Typography variant="h4" gutterBottom align="center">
