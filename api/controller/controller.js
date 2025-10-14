@@ -1,4 +1,4 @@
-import dataLayer from '../db/courtsRepo.js'
+import * as dataLayer from '../db/courtsRepo.js'
 
 export const getAllGames = async (req, res) => {
     try {
@@ -41,7 +41,7 @@ export const getGameById = async (req, res) => {
   }
 };
 
-  const createGame = async (req, res) => {
+ export const createGame = async (req, res) => {
   try {
     const game = await Game.create(req.body);
     res.status(201).json(game);

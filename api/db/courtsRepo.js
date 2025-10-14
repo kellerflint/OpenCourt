@@ -1,4 +1,4 @@
-import Game from './../model/games.js'; // Rename file to games.js if needed
+import Game from './../model/games.js'; 
 
 export const getAllGames = async () => {
     return await Game.findAll();

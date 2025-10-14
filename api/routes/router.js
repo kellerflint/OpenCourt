@@ -6,15 +6,15 @@ const router = Router();
 
 router.get('/', controller.getAllGames);
 router.get('/courts/:sport', controller.getGamesBySport);
-router.get('/courts/:gameId', controller.getGameById);
-router.get('/new', (_req, res) => {
+router.get('/games/:gameId', controller.getGameById);
+// router.get('/new', (_req, res) => {
 
-    res.render('new_entry_form', { title: 'New Submission Form' });
-});
+//     res.render('new_entry_form', { title: 'New Submission Form' });
+// });
 
-router.get('/products/all', getAllcourts);
+router.get('/courts/', controller.getAllgames);
 
-router.post("/new", createGame);
+//router.post("/new", createGame);
   
 
 
