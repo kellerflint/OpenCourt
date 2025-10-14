@@ -3,6 +3,11 @@ import { createUser } from '../db/userCrud.js'
 import passport from '../services/passport.js';   
 const router = Router();
 
+function requireAuth(req, res, next) {
+  if (req.isAuthenticated && req.isAuthenticated()) return next();
+  return res.status(401).json({ message: 'Unauthorized' });
+}
+
 router.get('/', (_req, res) => {
   res.json({ ok: true, name: 'OpenCourt API' });
 });
@@ -52,24 +57,26 @@ router.post("/login", (req, res, next) => {
 
 // LOGOUT
 router.post('/logout', (req, res) => {
-  if (typeof req.logout === 'function') {
-    try { req.logout(); } catch (e) { /* ignore */ }
-  }
-
-  if (!req.session) {
-    // no session to destroy — still clear cookie and return ok
-    res.clearCookie('connect.sid', { path: '/' });
-    return res.json({ ok: true });
-  }
-
-  req.session.destroy((err) => {
-    // clear cookie on client
-    res.clearCookie('connect.sid', { path: '/' });
+  req.logout(function(err) {
     if (err) {
-      console.error('session destroy error:', err);
-      return res.status(500).json({ ok: false, message: 'Failed to destroy session' });
+      console.error('Logout error:', err);
+      return res.status(500).json({ ok: false });
     }
-    return res.json({ ok: true });
+    
+    res.clearCookie('connect.sid', {
+      path: '/',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax'
+    });
+    
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Session destroy error:', err);
+        return res.status(500).json({ ok: false });
+      }
+      res.json({ ok: true });
+    });
   });
 });
 
