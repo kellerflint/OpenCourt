@@ -3,6 +3,7 @@ import cors from 'cors';
 import  { initDB } from './db/db.js';      
 import sequelize from './db/db.js';      
 import routes from './routes/router.js';
+import authRouter from './routes/auth.js';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import connectSession from "connect-session-sequelize";
@@ -52,8 +53,8 @@ app.use(passport.session());
 
 await initDB()
 
-
-
+//make sure their authenticated! 
+app.use('/api', authRouter);
 //server mounting
 app.use('/api', routes);
 
