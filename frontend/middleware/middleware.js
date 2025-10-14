@@ -28,9 +28,7 @@ export default async function middleware(req) {
     console.error('middleware auth check error:', err);
   }
 
-  
-// Not authenticated -> redirect to login and keep original pa
-  const loginUrl = new URL('/login', req.url);
-  loginUrl.searchParams.set('next', req.nextUrl.pathname);
-  return NextResponse.redirect(loginUrl);
+
+// Not authenticated -> redirect to login
+  return NextResponse.redirect(new URL('/', req.url));
 }

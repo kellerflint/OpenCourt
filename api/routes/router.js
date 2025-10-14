@@ -50,5 +50,27 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
+// LOGOUT
+router.post('/logout', (req, res) => {
+  if (typeof req.logout === 'function') {
+    try { req.logout(); } catch (e) { /* ignore */ }
+  }
+
+  if (!req.session) {
+    // no session to destroy — still clear cookie and return ok
+    res.clearCookie('connect.sid', { path: '/' });
+    return res.json({ ok: true });
+  }
+
+  req.session.destroy((err) => {
+    // clear cookie on client
+    res.clearCookie('connect.sid', { path: '/' });
+    if (err) {
+      console.error('session destroy error:', err);
+      return res.status(500).json({ ok: false, message: 'Failed to destroy session' });
+    }
+    return res.json({ ok: true });
+  });
+});
 
 export default router;
