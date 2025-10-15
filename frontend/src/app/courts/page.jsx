@@ -1,44 +1,29 @@
-'use client';
-import { useEffect, useState } from 'react';
-import GameCard from '../components/GameCard';
+"use client"; 
 
-export default function CourtsPage() {
+import { useEffect, useState } from "react";
+import GameList from "../../components/GameList"; // adjust path as needed
+
+export default function GamesPage() {
   const [games, setGames] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
-    async function fetchGames() {
+    const fetchGames = async () => {
       try {
-        const res = await fetch('/api/games');
-        if (!res.ok) {
-          throw new Error('Failed to fetch games');
-        }
-        const data = await res.json();
-        setGames(data);
+        const res = await fetch("/courts");
+        const json = await res.json();
+        setGames(json.data);
       } catch (err) {
-        setError(err.message || 'Something went wrong');
-      } finally {
-        setLoading(false);
+        console.error("Failed to fetch games", err);
       }
-    }
+    };
 
     fetchGames();
   }, []);
 
-  if (loading) return <p>Loading games...</p>;
-  if (error) return <p>Error: {error}</p>;
-
   return (
-    <div className="courts-page">
-      <h1>Available Games</h1>
-      <div className="games-list">
-        {games.length === 0 ? (
-          <p>No games posted yet.</p>
-        ) : (
-          games.map((game) => <GameCard key={game.id} game={game} />)
-        )}
-      </div>
+    <div>
+      <h1>All Games</h1>
+      <GameList games={games} />
     </div>
   );
 }

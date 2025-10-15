@@ -11,10 +11,10 @@ app.use(cors());
 app.use(express.json());
 
 //server mounting
-app.use('/api', routes);
+app.use('/', routes);
 
 initDB()
 
 app.listen(PORT, () => {
-  console.log(`API listening on http://localhost:${PORT}/api`);
-});
+  console.log(`API listening on http://localhost:${PORT}`);
+}); 

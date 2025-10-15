@@ -43,7 +43,7 @@ export const getGameById = async (req, res) => {
 
  export const createGame = async (req, res) => {
   try {
-    const game = await Game.create(req.body);
+    const game = await dataLayer.addGame(req.body);
     res.status(201).json(game);
   } catch (error) {
     console.error("Error creating game:", error);

@@ -4,20 +4,12 @@ import * as controller from './../controller/controller.js';
 
 const router = Router();
 
-router.get('/', controller.getAllGames);
+
 router.get('/courts/:sport', controller.getGamesBySport);
 router.get('/games/:gameId', controller.getGameById);
-// router.get('/new', (_req, res) => {
+router.get('/courts/', controller.getAllGames);
 
-//     res.render('new_entry_form', { title: 'New Submission Form' });
-// });
-
-router.get('/courts/', controller.getAllgames);
-
-//router.post("/new", createGame);
-  
-
-
+router.post('/new', controller.createGame);
 
 
 export default router

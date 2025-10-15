@@ -6,200 +6,275 @@ import TimePicker from 'react-time-picker';
 import 'react-time-picker/dist/TimePicker.css';
 import 'react-clock/dist/Clock.css';
 
-const LOGGED_IN_USERNAME = "JaneDoe7"; 
+
+import {
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Button,
+  Box,
+  Typography,
+} from '@mui/material';
+
+const LOGGED_IN_USERNAME = "JaneDoe7";
 
 const sportsOptions = [
   'Basketball', 'Volleyball', 'Soccer', 'Softball', 'Tennis', 'Pickleball', 'Other',
 ];
 
+const stateAbbreviations = [
+  'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+  'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+  'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+  'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
+  'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY',
+];
+
 const postGameData = async (dataToSend) => {
-  const response = await fetch('/api/new/submit-game', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dataToSend),
+  const response = await fetch('/new', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(dataToSend),
   });
 
   const result = await response.json();
 
   if (!response.ok) {
-      throw new Error(result.error || 'Submission failed');
+    throw new Error(result.error || 'Submission failed');
   }
   return result;
 };
 
 export default function SubmitGamePage() {
   const [formData, setFormData] = useState({
-      username: LOGGED_IN_USERNAME,
-      sport: '',
-      otherSport: '',
-      address: '',
-      date: '',
-      time: '',
-      peopleNeeded: '',
+    username: LOGGED_IN_USERNAME,
+    sport: '',
+    otherSport: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+    reservation_date: '',
+    reservation_time: '',
+    number_of_people: '',
   });
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
-      }));
-      if (name === 'sport' && value !== 'Other') {
-          setFormData(prevData => ({ ...prevData, otherSport: '' }));
-      }
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    if (name === 'sport' && value !== 'Other') {
+      setFormData((prevData) => ({ ...prevData, otherSport: '' }));
+    }
   };
 
   const handleSubmit = async (e) => {
-      e.preventDefault();
-      setMessage('');
-      setIsSubmitting(true);
+    e.preventDefault();
+    setMessage('');
+    setIsSubmitting(true);
 
-      if (!formData.sport || !formData.date || !formData.time || !formData.address.trim()) {
-          setMessage('Please fill out all required fields: Sport, Address, Date, and Time.');
-          setIsSubmitting(false);
-          return;
-      }
+    if (
+      !formData.sport ||
+      !formData.date ||
+      !formData.time ||
+      !formData.address.trim() ||
+      !formData.city.trim() ||
+      !formData.state.trim() ||
+      !formData.zip.trim()
+    ) {
+      setMessage('Please fill out all required fields: Sport, Address, City, State, Zip, Date, and Time.');
+      setIsSubmitting(false);
+      return;
+    }
 
-      if (formData.sport === 'Other' && !formData.otherSport.trim()) {
-          setMessage('Please enter the sport name if you selected "Other".');
-          setIsSubmitting(false);
-          return;
-      }
+    if (formData.sport === 'Other' && !formData.otherSport.trim()) {
+      setMessage('Please enter the sport name if you selected "Other".');
+      setIsSubmitting(false);
+      return;
+    }
 
-      const finalSport = formData.sport === 'Other' ? formData.otherSport.trim() : formData.sport;
-      const peopleCount = formData.peopleNeeded ? parseInt(formData.peopleNeeded, 10) : null;
+    const finalSport = formData.sport === 'Other' ? formData.otherSport.trim() : formData.sport;
+    const peopleCount = formData.peopleNeeded ? parseInt(formData.peopleNeeded, 10) : null;
 
-      const dataToSend = {
-          username: formData.username,
-          sport: finalSport,
-          address: formData.address.trim(),
-          date: formData.date,
-          time: formData.time,
-          peopleNeeded: peopleCount,
-      };
+    const dataToSend = {
+      username: formData.username,
+      sport: finalSport,
+      address: formData.address.trim(),
+      city: formData.city.trim(),
+      state: formData.state,
+      zip: formData.zip.trim(),
+      reservation_date: formData.date,
+      reservation_time: formData.time,
+      number_of_people: peopleCount,
+    };
 
-      try {
-          const result = await postGameData(dataToSend);
-          setMessage(`Game successfully posted! ID: ${result.id}`);
-      } catch (error) {
-          console.error('Submission error:', error);
-          setMessage(`Submission failed: ${error.message || 'An unexpected error occurred.'}`);
-      } finally {
-          setIsSubmitting(false);
-      }
+    try {
+      const result = await postGameData(dataToSend);
+      setMessage(`Game successfully posted! ID: ${result.id}`);
+    } catch (error) {
+      console.error('Submission error:', error);
+      setMessage(`Submission failed: ${error.message || 'An unexpected error occurred.'}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-      <div className="form-container">
-          <Head>
-              <title>Post a Game</title>
-          </Head>
-          <h1 className="heading">Post a Game to Find Players</h1>
+    <Box sx={{ maxWidth: 600, mx: 'auto', p: 2 }}>
+      <Head>
+        <title>Post a Game</title>
+      </Head>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Post a Game to Find Players
+      </Typography>
 
-          <p className="user-info">
-              Posting as: <strong>{formData.username}</strong>
-          </p>
+      <Typography sx={{ mb: 3 }}>
+        Posting as: <strong>{formData.username}</strong>
+      </Typography>
 
-          <form onSubmit={handleSubmit} className="form-main">
+      <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <FormControl fullWidth required>
+          <InputLabel id="sport-label">Choose Sport</InputLabel>
+          <Select
+            labelId="sport-label"
+            id="sport"
+            name="sport"
+            value={formData.sport}
+            label="Sport"
+            onChange={handleChange}
+          >
+            <MenuItem value="">
+              <em>-- Select a Sport --</em>
+            </MenuItem>
+            {sportsOptions.map((sport) => (
+              <MenuItem key={sport} value={sport}>
+                {sport}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-              <div className="form-group">
-                  <label htmlFor="sport" className="form-label">Sport *</label>
-                  <select
-                      id="sport"
-                      name="sport"
-                      value={formData.sport}
-                      onChange={handleChange}
-                      required
-                      className="form-input"
-                  >
-                      <option value="">-- Select a Sport --</option>
-                      {sportsOptions.map((sport) => (
-                          <option key={sport} value={sport}>
-                              {sport}
-                          </option>
-                      ))}
-                  </select>
-              </div>
+        {formData.sport === 'Other' && (
+          <TextField
+            label="Please provide the sport"
+            name="otherSport"
+            value={formData.otherSport}
+            onChange={handleChange}
+            required
+            fullWidth
+          />
+        )}
 
-              {formData.sport === 'Other' && (
-                  <div className="form-group">
-                      <label htmlFor="otherSport" className="form-label">Specify Sport *</label>
-                      <input
-                          type="text"
-                          id="otherSport"
-                          name="otherSport"
-                          value={formData.otherSport}
-                          onChange={handleChange}
-                          required
-                          className="form-input"
-                      />
-                  </div>
-              )}
+        <TextField
+          label="Address"
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          required
+          fullWidth
+          placeholder="Enter the game court location"
+        />
 
-              <div className="form-group">
-                  <label htmlFor="address" className="form-label">Address *</label>
-                  <input
-                      type="text"
-                      id="address"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      required
-                      className="form-input"
-                      placeholder="Enter the game location address"
-                  />
-              </div>
+        <TextField
+          label="City"
+          name="city"
+          value={formData.city}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
 
-              <div className="form-group">
-                  <label htmlFor="date" className="form-label">Date *</label>
-                  <input
-                      type="date"
-                      id="date"
-                      name="date"
-                      value={formData.date}
-                      onChange={handleChange}
-                      required
-                      className="form-input"
-                  />
-              </div>
+        <FormControl fullWidth required>
+          <InputLabel id="state-label">State </InputLabel>
+          <Select
+            labelId="state-label"
+            id="state"
+            name="state"
+            value={formData.state}
+            label="State"
+            onChange={handleChange}
+          >
+            <MenuItem value="">
+              <em>Select State</em>
+            </MenuItem>
+            {stateAbbreviations.map((abbr) => (
+              <MenuItem key={abbr} value={abbr}>
+                {abbr}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-              <div className="form-group">
-                  <label htmlFor="time" className="form-label">Time *</label>
-                  <TimePicker
-                      onChange={(value) => setFormData(prev => ({ ...prev, time: value }))}
-                      value={formData.time}
-                      disableClock={true}
-                      clearIcon={null}
-                      format="HH:mm"
-                      className="form-input"
-                  />
-              </div>
+        <TextField
+          label="Zip Code"
+          name="zip"
+          value={formData.zip}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
 
-              <div className="form-group">
-                  <label htmlFor="peopleNeeded" className="form-label">Total People Needed (Optional)</label>
-                  <input
-                      type="number"
-                      id="peopleNeeded"
-                      name="peopleNeeded"
-                      value={formData.peopleNeeded}
-                      onChange={handleChange}
-                      min="0"
-                      max="20"
-                      className="form-input"
-                      placeholder="e.g., 5"
-                  />
-              </div>
+        <TextField
+          label="Date"
+          name="date"
+          type="date"
+          value={formData.date}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
 
-              <button type="submit" disabled={isSubmitting} className="form-button">
-                  {isSubmitting ? 'Submitting...' : 'Post Game'}
-              </button>
-          </form>
+        <Box>
+          <InputLabel sx={{ mb: 1 }}>Time</InputLabel>
+          <TimePicker
+            onChange={(value) => setFormData((prev) => ({ ...prev, time: value }))}
+            value={formData.time}
+            disableClock={true}
+            clearIcon={null}
+            format="HH:mm"
+            className="form-input"
+          />
+        </Box>
 
-          {message && <p className="form-message">{message}</p>}
-      </div>
+        <FormControl fullWidth>
+        <InputLabel id="peopleNeeded-label">Total People Needed (Optional)</InputLabel>
+        <Select
+            labelId="peopleNeeded-label"
+            id="peopleNeeded"
+            name="peopleNeeded"
+            value={formData.peopleNeeded}
+            label="Total People Needed (Optional)"
+            onChange={handleChange}
+        >
+            <MenuItem value="">
+            <em>None</em>
+            </MenuItem>
+            {[...Array(100).keys()].map((num) => (
+            <MenuItem key={num + 1} value={num + 1}>
+                {num + 1}
+            </MenuItem>
+            ))}
+        </Select>
+        </FormControl>
+
+        <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting...' : 'Post Game'}
+        </Button>
+      </Box>
+
+      {message && (
+        <Typography sx={{ mt: 2, color: message.startsWith('Game successfully') ? 'green' : 'error.main' }}>
+          {message}
+        </Typography>
+      )}
+    </Box>
   );
 }

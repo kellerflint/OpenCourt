@@ -24,9 +24,22 @@ const Schema = sequelize.define('game', {
         allowNull: false
     },
 
+    city: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    },
+    state: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    zip: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+
     number_of_people: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
 
     reservation_date: {
