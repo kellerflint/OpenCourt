@@ -15,6 +15,7 @@ export const getGamesBySport = async (sport) => {
 };
 
 export const addGame = async (game) => {
+    console.log('DATALAYER: Data submitted to Sequelize:', game)
     return await Game.create(game);
 };
 

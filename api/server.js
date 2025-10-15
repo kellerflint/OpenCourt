@@ -13,7 +13,10 @@ app.use(express.json());
 //server mounting
 app.use('/', routes);
 
-initDB()
+initDB().catch(err => {
+  console.error('Failed to initialize database:', err);
+  process.exit(1);
+});
 
 app.listen(PORT, () => {
   console.log(`API listening on http://localhost:${PORT}`);

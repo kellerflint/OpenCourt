@@ -43,6 +43,8 @@ export const getGameById = async (req, res) => {
 
  export const createGame = async (req, res) => {
   try {
+
+    console.log('BACKEND: Data received in controller (req.body):', req.body);
     const game = await dataLayer.addGame(req.body);
     res.status(201).json(game);
   } catch (error) {

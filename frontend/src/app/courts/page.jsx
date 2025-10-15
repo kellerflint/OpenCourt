@@ -1,7 +1,7 @@
 "use client"; 
 
 import { useEffect, useState } from "react";
-import GameList from "../../components/GameList"; // adjust path as needed
+import GameList from "./../components/GameList"; // adjust path as needed
 
 export default function GamesPage() {
   const [games, setGames] = useState([]);
