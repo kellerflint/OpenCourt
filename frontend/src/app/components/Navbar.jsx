@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from 'next/image';
 import { AppBar, Toolbar, Button, Box } from "@mui/material";
 
+// navbar that will be pushed to layout.jsx
 export default function Navbar() {
   return (
     <AppBar position="static">
@@ -15,7 +16,7 @@ export default function Navbar() {
         <Button color="inherit" component={Link} href="/">
           Home
         </Button>
-        <Button color="inherit" component={Link} href="/request">
+        <Button color="inherit" component={Link} href="/courts">
           Find Open Courts
         </Button>
          <Button color="inherit" component={Link} href="/new">
