@@ -39,3 +39,14 @@ a {
   height: 150px;
   object-fit: cover; /* Ensures the image covers the area without distortion */
 }
+
+.sport-emoji {
+  font-size: 80px;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+}

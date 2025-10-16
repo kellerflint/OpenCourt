@@ -2,16 +2,24 @@
 
 export default function GameCard({ game }) {
 
-    const sportImage = game.sport.toLowerCase().replace(/\s+/g, '');
-    const imageSrc = `/sports/${sportImage}.jpg`;
+    const sportEmojis = {
+        basketball: '🏀',
+        soccer: '⚽',
+        football: '🏈',
+        volleyball: '🏐',
+        tennis: '🎾',
+        softball: '🥎',
+        baseball: '⚾',
+    };
+
+    const sportKey = game.sport.toLowerCase().replace(/\s+/g, '');
+    const emoji = sportEmojis[sportKey] || '🏃';
 
     return (
         <div className="game-card">
-            <img
-                src={imageSrc}
-                alt={game.sport}
-                className="sport-image"
-            />
+            <div className="sport-emoji">
+                {emoji}
+            </div>
             <div className="game-info">
                 <h3>{game.sport}</h3>
                 <p><strong>Date:</strong> {game.reservation_date}</p>
