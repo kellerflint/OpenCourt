@@ -2,9 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import db, { initDB } from './db/db.js';            
 import routes from './routes/router.js';
-
+import 'dotenv/config'; 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT
 
 //allow other urls to access this
 app.use(cors());
