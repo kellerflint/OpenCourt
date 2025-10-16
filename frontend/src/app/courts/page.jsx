@@ -9,7 +9,7 @@ export default function GamesPage() {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const res = await fetch("/courts");
+        const res = await fetch("http://localhost:3001/courts");
         const json = await res.json();
         setGames(json.data);
       } catch (err) {

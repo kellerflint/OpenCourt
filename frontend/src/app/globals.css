@@ -40,3 +40,10 @@ a {
     color-scheme: dark;
   }
 }
+
+.sport-image {
+    
+    width: 150px; /* Example width */
+    height: 150px; /* Example height */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+}
