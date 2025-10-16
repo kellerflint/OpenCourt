@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { AppBar, Toolbar, Button, Box } from '@mui/material';
 import { useRouter } from 'next/navigation'; // <<-- use this in app router
+import { buildApiUrl } from '../../lib/config';
 
 // navbar that will be pushed to layout.jsx
 export default function Navbar() {
@@ -13,7 +14,7 @@ export default function Navbar() {
 
   async function handleLogout() {
     try {
-      await fetch('http://localhost:3001/api/logout', {
+      await fetch(buildApiUrl('/api/logout'), {
         method: 'POST',
         credentials: 'include',
       });

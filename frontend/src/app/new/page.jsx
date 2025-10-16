@@ -10,6 +10,7 @@ import {
     Button,
     Grid, 
 } from '@mui/material';
+import { buildApiUrl } from '../../lib/config';
 
 const LOGGED_IN_USERNAME = "JaneDoe7"; 
 
@@ -43,7 +44,7 @@ const states = [
 
 
 const postGameData = async (dataToSend) => {
-    const response = await fetch('http://localhost:3001/api/new', {
+    const response = await fetch(buildApiUrl('/api/new'), {
         method: 'POST',
         credentials: 'include',
         headers: {

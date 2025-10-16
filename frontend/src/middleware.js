@@ -18,7 +18,7 @@ export default async function middleware(req) {
   const cookieHeader = req.headers.get('cookie') || '';
   
   // Our backend server url
-  const backend = 'http://localhost:3001';
+  const backend = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
   
   // Get the page the user is trying to visit
   const path = req.nextUrl.pathname;

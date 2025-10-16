@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import GameList from "./../../components/GameList"; // adjust path as needed for nesting
+import { buildApiUrl } from "../../../lib/config";
 
 export default function GamesBySportPage() {
   
@@ -22,7 +23,9 @@ export default function GamesBySportPage() {
       setError(null);
       try {
 
-        const res = await fetch(`http://localhost:3001/courts/${sport}`);
+        const res = await fetch(buildApiUrl(`/api/courts/${sport}`), {
+          credentials: 'include'
+        });
 
 
         if (!res.ok) {
@@ -43,7 +46,7 @@ export default function GamesBySportPage() {
     };
 
     fetchGamesBySport();
-  });
+  }, [sport]);
 
   if (isLoading) {
     return (

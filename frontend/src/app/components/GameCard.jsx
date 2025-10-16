@@ -17,7 +17,7 @@ export default function GameCard({ game }) {
                 <p><strong>Date:</strong> {game.reservation_date}</p>
                 <p><strong>Time:</strong> {game.reservation_time}</p>
                 <p><strong>Posted by:</strong> {game.username}</p>
-                {game.peopleNeeded !== null && (
+                {game.number_of_people != null && (
                     <p><strong>People Needed:</strong> {game.number_of_people}</p>
                 )}
             </div>

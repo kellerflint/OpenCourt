@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import {Box, TextField, Button, Typography, Alert } from '@mui/material'
 import { useRouter } from "next/navigation";
+import { buildApiUrl } from "../lib/config";
 
 export default function LoginPage() {
 // user effects! const router = useRouter();  
@@ -36,7 +37,7 @@ export default function LoginPage() {
     setError(null); setSuccess(null);
     try {
       // use credentials so browser accepts the session cookie sent by the server
-      const res = await fetch("http://localhost:3001/api/login", {
+      const res = await fetch(buildApiUrl("/api/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: 'include',               // <- important
@@ -63,9 +64,10 @@ export default function LoginPage() {
 
     //new user Post
       try {
-        const res = await fetch("http://localhost:3001/api/newUser", {
+        const res = await fetch(buildApiUrl("/api/newUser"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: 'include',
           body: JSON.stringify({ email, username, password }),
         });
 

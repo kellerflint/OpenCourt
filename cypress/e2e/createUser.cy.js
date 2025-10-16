@@ -1,10 +1,10 @@
 describe("POST /api/newUser", () => {
-  const baseUrl = "http://localhost:3001"; 
+  const baseUrl = Cypress.env("apiUrl") || "http://localhost:3001";
 
   it("should create a new user successfully", () => {
     cy.request({
       method: "POST",
-      url: `${baseUrl}/api/newUser`,
+  url: `${baseUrl}/api/newUser`,
       body: {
         email: "john@example.com",
         username: "john",

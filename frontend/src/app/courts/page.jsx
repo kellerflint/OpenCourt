@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import GameList from "./../components/GameList"; // adjust path as needed
+import { buildApiUrl } from "../../lib/config";
 
 export default function GamesPage() {
   const [games, setGames] = useState([]);
@@ -9,7 +10,7 @@ export default function GamesPage() {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const res = await fetch("http://localhost:3001/api/courts", {
+        const res = await fetch(buildApiUrl("/api/courts"), {
           credentials: 'include'
         });
         const json = await res.json();
