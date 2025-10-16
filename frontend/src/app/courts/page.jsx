@@ -25,7 +25,7 @@ export default function GamesPage() {
 
   return (
     <div>
-      <h1>All Games</h1>
+      <h1 style={{ padding: '20px' }}>All Games</h1>
       <GameList games={games} />
     </div>
   );
