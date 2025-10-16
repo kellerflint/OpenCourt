@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { createUser } from '../db/userCrud.js'
-import passport from '../services/passport.js';   
+import passport from '../services/passport.js';
+import * as controller from '../controller/controller.js';
+
 const router = Router();
 
 function requireAuth(req, res, next) {
@@ -8,10 +10,18 @@ function requireAuth(req, res, next) {
   return res.status(401).json({ message: 'Unauthorized' });
 }
 
+// API Info
 router.get('/', (_req, res) => {
   res.json({ ok: true, name: 'OpenCourt API' });
 });
 
+// Game Routes
+router.get('/courts/:sport', controller.getGamesBySport);
+router.get('/games/:gameId', controller.getGameById);
+router.get('/courts/', controller.getAllGames);
+router.post('/new', requireAuth, controller.createGame);
+
+// Auth Routes
 router.post("/newUser", async (req, res) => {
   const { email, username, password } = req.body;
 

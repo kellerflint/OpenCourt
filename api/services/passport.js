@@ -1,7 +1,7 @@
 import passport from 'passport'
 import { Strategy as LocalStrategy} from 'passport-local'
 import bcrypt from 'bcryptjs'
-import User from '../model/user.js'
+import User from '../model/users.js'
 
 //Login with Email + password
 passport.use(new LocalStrategy(

@@ -51,13 +51,19 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-await initDB()
+// Initialize database
+try {
+  await initDB();
+} catch (err) {
+  console.error('Failed to initialize database:', err);
+  process.exit(1);
+}
 
 //make sure their authenticated! 
 app.use('/api', authRouter);
-//server mounting
+//server mounting - all game/auth routes
 app.use('/api', routes);
 
 app.listen(PORT, () => {
-  console.log(`API listening on http://localhost:${PORT}/api`);
-});
+  console.log(`API listening on http://localhost:${PORT}`);
+}); 

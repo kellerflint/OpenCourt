@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { AppBar, Toolbar, Button, Box } from '@mui/material';
 import { useRouter } from 'next/navigation'; // <<-- use this in app router
 
+// navbar that will be pushed to layout.jsx
 export default function Navbar() {
   const router = useRouter();
 
@@ -34,7 +35,7 @@ export default function Navbar() {
             Home
           </Button>
 
-          <Button color="inherit" component={Link} href="/request">
+          <Button color="inherit" component={Link} href="/courts">
             Find Open Courts
           </Button>
 

@@ -28,4 +28,14 @@ a {
   text-decoration: none;
 }
 
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
 
+.sport-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+}
