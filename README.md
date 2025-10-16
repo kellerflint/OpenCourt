@@ -1,36 +1,115 @@
 # OpenCourt
-Find a court. Join a game. or Play more. Search less.
+Find a court. Join a game. Play more. Search less.
 
-Problem Statement: Solves the problem on not being able to find places for open play for sports such as pickleball, basketball, tennis, volleyball, etc.
+OpenCourt helps players discover and organize open-play sessions for sports like pickleball, basketball, tennis, volleyball, and more.
 
-Target Users: Anyone that wants to play, socialize, or get active.
+- Tech stack: Next.js (frontend), Node.js/Express + Passport (API), MySQL + Sequelize (DB), PM2 (process manager).
+- Core features: Create/join events, view events and participants, update/delete events.
+- Extended ideas: User profiles, skill ratings, payments.
 
-# Feature Breakdown
+## Project Structure
+- frontend/ — Next.js app (App Router)
+- api/ — Express API with Passport sessions
+- api/models — Sequelize models (users, games, sessions)
+- api/routes — Routers (login, games, etc.)
+- scripts/ — Deployment scripts
 
-MVP Features: 
-Create: Create an event or joining event as a participant
-Read: Looking at list of events, participants, players profile
-Update: Changing location, time, players, size of party
-Delete: Removing event, removing player
+## Prerequisites
+- Node.js 20.x and npm
+- MySQL 8.x
+- PM2 (for production)
+- Git
 
-Extended Features: 
-1. User profiles, which could include sports they play, rating/level of skill, profile pictures
-2. Payment links, for court/rental fees, tournament entry fees
+## Environment Variables
+API (api/.env)
+- DB_HOST: MySQL host (default: localhost)
+- DB_USER: MySQL user
+- DB_PASS: MySQL password
+- DB_NAME: Database name (e.g., openCourt)
+- DB_PORT: MySQL port (default: 3306)
+- PORT: API port (default: 3001)
+- SESSION_SECRET: Any random string
+- CORS_ORIGIN: Comma-separated allowed origins (e.g., http://YOUR.IP:3000,http://localhost:3000)
+- NODE_ENV: development for HTTP, production for HTTPS
 
-# Data Model Planning
-Core Entities: Events, Users, Location
+Frontend (frontend/.env.local)
+- NEXT_PUBLIC_API_URL: Base URL of API (e.g., http://YOUR.IP:3001)
 
-Key Relationships: Users can host Events, Events can have multiples Users, Events have one location, Locations can host multiple events
+## Local Development
+1) Create DB
+- Create a MySQL database (e.g., openCourt) and user with full privileges.
 
-CRUD Operations:
-1. Users can create events
-2. Users can join events
-3. Users can view events and participants
-4. Hosts can remove users
-5. Hosts can update event details
-6. Users can leave events
-7. Hosts can delete events
+2) API env
+- Create api/.env:
+```
+DB_HOST=localhost
+DB_USER=your_user
+DB_PASS=your_pass
+DB_NAME=openCourt
+DB_PORT=3306
+PORT=3001
+SESSION_SECRET=dev-secret
+CORS_ORIGIN=http://localhost:3000
+NODE_ENV=development
+```
 
-# User Experience
-User Flows: A user can either host or join an event. If they host an event, they will determine size of event, location, time, and what sport. If they are a participant they will review list of events and join the one they would want to partake in. If a user is hosting they can remove players they don't want. Users themselves can also leave event. Hosts can also delete events.
+3) Frontend env
+- Create frontend/.env.local:
+```
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
 
+4) Install and run
+- API:
+```
+cd api
+npm install
+npm start
+```
+- Frontend (dev):
+```
+cd frontend
+npm install
+npm run dev
+```
+- Frontend (prod):
+```
+cd frontend
+npm run build
+npm run start -p 3000
+```
+
+## Deployment (Minimal VM Script)
+Use the provided script to set up a fresh Ubuntu VM end-to-end (updates, Node.js, MySQL, PM2, repo clone, envs, build, PM2 start).
+
+Run on the VM:
+```
+sudo bash scripts/min-setup.sh \
+  -r https://github.com/youruser/OpenCourt.git \
+  -b main \
+  -d YOUR.SERVER.IP \
+  --db-name openCourt \
+  --db-user opencourt \
+  --db-pass blue123
+```
+
+What it does
+- Updates the system (non-interactive)
+- Installs Git, Node.js 20.x, MySQL, PM2
+- Creates MySQL database, user, and grants
+- Clones (or updates) the repo to /home/OpenCourt
+- Writes api/.env and frontend/.env.local
+- Installs npm deps, builds frontend, starts both with PM2
+- Prints health endpoints
+
+PM2 commands
+- View: pm2 ls
+- Logs: pm2 logs opencourt-api opencourt-frontend
+- Restart: pm2 restart opencourt-api opencourt-frontend
+- Save boot: pm2 save
+
+## Troubleshooting
+- Auth cookies on HTTP: set NODE_ENV=development in api/.env.
+- CORS: ensure CORS_ORIGIN includes your frontend origin.
+- 404 /logo.png: add frontend/public/logo.png.
+- Ports in-use: change PORT (API) or Next start -p (frontend).
