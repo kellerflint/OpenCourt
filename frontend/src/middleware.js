@@ -8,10 +8,9 @@ import { NextResponse } from 'next/server';
 // - images and other static files
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|$).*)'
+    '/((?!$|api|_next/static|_next/image|_next/data|favicon.ico|robots.txt|sitemap.xml|manifest.json|fonts|images|assets|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|map|txt|woff2?)$).*)'
   ]
 };
-
 // This function runs before letting users access protected pages
 export default async function middleware(req) {
   // Get the cookies (we need these to check if user is logged in)
