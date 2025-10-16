@@ -22,6 +22,7 @@ export async function initDB({ runSync = false } = {}) {
     await sequelize.sync(); 
     console.log('Models synced');
   }
+  await sequelize.sync({ alter: true });
 }
 
 export default sequelize;
