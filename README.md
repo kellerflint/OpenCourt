@@ -198,3 +198,6 @@ If your application freezes (either on the VM or locally) and there have been no
 ```bash
 docker-compose restart
 ```
+
+
+# start writing unit tests for backend
