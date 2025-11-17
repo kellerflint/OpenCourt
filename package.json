@@ -1,4 +1,11 @@
 {
+  "name": "open-court-root",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
   "devDependencies": {
     "jest": "^30.2.0"
   }

@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "1. Users can create events\r 2. Users can join events\r 3. Users can view events and participants\r 4. Hosts can remove users\r 5. Hosts can update event details\r 6. Users can leave events\r 7. Hosts can delete events",
   "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+  "scripts": {    
     "start": "node server.js",
     "pm2": "pm2 start server.js --watch",
     "pm2-stop": "pm2 stop server.js",
