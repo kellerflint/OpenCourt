@@ -191,6 +191,102 @@ docker-compose down -v
 # This rebuilds all images and starts fresh containers
 docker-compose up -d --build
 ```
+<<<<<<< HEAD
+<br>
+<br>
+
+## Docker Setup
+
+### Part 0: Modifying your .env files | <code style="color : red">*IMPORTANT!*</code>
+When using Docker inside of the VM, you will need to modify your `.env` files to make sure the `docker-compose.yml` file works inside of the project. 
+
+***Steps:***
+
+1. The .env file that you created earlier, you'll need to access that and add another parameter.
+    ```bash
+    nano .env
+    ```
+2. Inside of the .env file you're going to need to add/edit.
+    ```env
+    DB_HOST=database
+    DB_ROOT_PW=example
+    ```
+    ##### <code style="color : Yellow">*!!! Make sure that DB_HOST is set to **database**. This is required for the Docker network to work properly and securely.*</code>
+3. Save you credentials out of nano, by doing `CTRL + O`, and then hit `ENTER`.
+4. Next, you'll need to go into the frontend folder and modify that .env file as well.
+    ```bash
+    cd src/frontend/opencourt
+    nano .env
+    ```
+5. Inside of this .env file, you'll need to verify the `VITE_SERVER_HOST` and `VITE_SERVER_PORT` variables are set to the variables below.
+    ```env
+    VITE_SERVER_HOST = "localhost"  
+    VITE_SERVER_PORT = "3000"
+    ```
+6. Save you credentials out of nano, by doing `CTRL + O`, and then hit `ENTER`.
+7. Return back to the root directory by doing:
+    ```bash
+        cd ../../../../
+    ```
+
+<br>
+<br>
+
+---
+
+### Part 1: Installing Docker onto the VM *(Virtual Machine)*
+Inside the root directory run this command to install Docker with the necessary packages and dependencies on your VM, along with starting the docker containers.
+```bash
+    bash project_INIT.sh    # Runs another shell script - get_docker.sh
+```
+
+<br>
+<br>
+
+---
+### Running Docker and Stopping Docker
+
+Now you should be able to run the `docker-compose.yml` file from the root directory of the project and stop it. 
+
+To Start the Docker Containers, run:
+```bash
+    docker-compose up -d    #This is here in case you need to start the docker containers back up. 
+```
+
+To Stop the Docker Containers, run:
+```bash
+    docker-compose down     #To remove the containers
+```
+or
+
+```bash
+    docker-compose stop     #To NOT remove the containers
+```
+
+<br>
+
+**To visit the Frontend page, navigate to `http://{vm-ip-address}:5174`**
+<br>
+<br>
+
+## How to use Adminer
+1. Open a web browser and navigate to `http://{vm-ip-address}:8081`
+2. Fill in the login credentials as follows:
+   - System: MySQL
+   - Server: database
+   - Username: {your-username}
+   - Password: {your-password}
+   - Database: opencourt
+3. Click "Login" to access the database management interface.
+
+
+---
+
+***If you have any questions about setting up Docker on your VM, talk to Tyler and/or Raymond.***
+
+---
+    
+=======
 
 ### Restarting Docker
 
@@ -249,3 +345,4 @@ Here are some common issues you may encounter when running tests:
    - Docker **must** be installed and running on your machine for any of these tests to work.
 2. template.env or template.nginx.conf not found
    - Make sure these template files exist in the root directory of your project. The E2E and local-setup script depends on it.
+>>>>>>> upstream/main

@@ -1,52 +1,88 @@
+# Docker Compose
+version: '3.8'
 services:
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile.server
-    restart: always
-    environment:
-      - DB_HOST=db
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_PORT=${DB_PORT}
-    depends_on:
-      - db
-    networks:
-      - opencourt-net
 
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
-    restart: always
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-    networks:
-      - opencourt-net
-
+  # DATABASE SERVICE (MySQL)
   db:
-    build:
-      context: .
-      dockerfile: Dockerfile.db
-    restart: always
+    image: mysql:8.0
+    container_name: opencourt_db
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PW}
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
+    ports: 
       - "3307:3306"
     volumes:
-      - db-data:/var/lib/mysql
+      - db_data:/var/lib/mysql
+      - ./src/database:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PW}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
-      - opencourt-net
+      - opencourt-network
 
-networks:
-  opencourt-net:
-    driver: bridge
+  # BACKEND SERVICE (Node.js/Express)
+  backend:
+    build: ./src/server
+    container_name: opencourt_backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      NODE_ENV: production
+      PORT: "3000"
+    ports:
+      - 3001:3000
+    networks:
+      - opencourt-network
 
+  # FRONTEND SERVICE (Vite/React)
+  frontend:
+    build: 
+      context: ./src/frontend/opencourt
+      dockerfile: Dockerfile
+      args:
+        VITE_SERVER_HOST: localhost
+        VITE_SERVER_PORT: 3000
+    container_name: opencourt_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: http://localhost:3000
+    ports:
+      - "5174:5173"
+    networks:
+      - opencourt-network
+
+  # ADMINER (light weight data management tool. Like phpmyadmin)
+  adminer:
+    image: adminer
+    container_name: opencourt_adminer
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8081:8080"
+    networks:
+      - opencourt-network
+
+# VOLUMES (Persistent Storage)
 volumes:
-  db-data:
+  db_data:
+    driver: local
+
+# NETWORKS (Container Communication)
+networks:
+  opencourt-network:
+    driver: bridge
