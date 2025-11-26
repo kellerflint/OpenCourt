@@ -1,10 +1,10 @@
 #!/bin/bash
 
 OSTYPE=$(uname -s)
-if[OSTYPE == "Linux"]; then
-  SED="sed -i ''"
-else
+if [ "$OSTYPE" == "Linux" ]; then
   SED="sed -i"
+else
+  SED="sed -i ''"
 fi
 
 DB_USER="app_user"
@@ -30,8 +30,14 @@ trap 'error_handler' ERR
 
 echo "Starting OpenCourt Setup"
 
-if ! command_exists docker || ! command_exists docker-compose; then
-  echo "Error: 'docker' and 'docker-compose' are required."
+if ! command_exists docker; then
+  echo "Error: 'docker' is required."
+  echo "Please run prepare-vm.sh then re-run this script."
+  exit 1
+fi
+
+if ! docker compose version >/dev/null 2>&1; then
+  echo "Error: 'docker compose' plugin is required."
   echo "Please run prepare-vm.sh then re-run this script."
   exit 1
 fi
@@ -62,11 +68,11 @@ fi
 echo "Creating .env file"
 cp "$TEMPLATE_ENV_FILE" "$ENV_FILE"
 
-$SED -i "s/DB_HOST = \"\"/DB_HOST = \"db\"/" "$ENV_FILE"
-$SED -i "s/DB_USER = \"\"/DB_USER = \"$DB_USER\"/" "$ENV_FILE"
-$SED -i "s/DB_PASSWORD = \"\"/DB_PASSWORD = \"$DB_PASS\"/" "$ENV_FILE"
-$SED -i "s/DB_NAME = \"\"/DB_NAME = \"$DB_NAME\"/" "$ENV_FILE"
-$SED -i "s/DB_PORT =/DB_PORT = 3306/" "$ENV_FILE"
+$SED "s/DB_HOST = \"\"/DB_HOST = \"db\"/" "$ENV_FILE"
+$SED "s/DB_USER = \"\"/DB_USER = \"$DB_USER\"/" "$ENV_FILE"
+$SED "s/DB_PASSWORD = \"\"/DB_PASSWORD = \"$DB_PASS\"/" "$ENV_FILE"
+$SED "s/DB_NAME = \"\"/DB_NAME = \"$DB_NAME\"/" "$ENV_FILE"
+$SED "s/DB_PORT =/DB_PORT = 3306/" "$ENV_FILE"
 
 echo "" >> "$ENV_FILE"
 echo "# MySQL Root Password (for Docker)" >> "$ENV_FILE"
@@ -74,10 +80,10 @@ echo "MYSQL_ROOT_PASSWORD=$ROOT_PASS" >> "$ENV_FILE"
 
 echo "Creating nginx.conf file"
 cp "$TEMPLATE_NGINX_FILE" "$NGINX_CONF_FILE"
-$SED -i "s|YOUR_SERVER_IP|$VM_IP|" "$NGINX_CONF_FILE"
+$SED "s|YOUR_SERVER_IP|$VM_IP|" "$NGINX_CONF_FILE"
 
 echo "Building and starting all containers (web, backend, db)"
-docker-compose up -d --build
+docker compose up -d --build
 
 echo "---"
 echo "Setup Complete!"

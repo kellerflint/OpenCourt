@@ -124,9 +124,35 @@ There is currently an issue where when an event, location, or user is added to t
         - Username: app_user
         - Password: The app_user password you chose during setup
 
-## Updating the Application on the VM
+## Automated Deployment
 
-When you push new code to your repo, run the [update.sh](update.sh) script to deploy them.
+OpenCourt uses GitHub Actions for continuous deployment. Whenever code is pushed to the `main` branch, the application automatically deploys to the VM.
+
+### How It Works
+
+The deployment workflow (`.github/workflows/deploy.yml`) performs the following steps:
+1. **Checkout Code**: Fetches the latest code from the repository
+2. **Set up SSH**: Configures SSH authentication using stored secrets
+3. **Deploy to VM**: Connects to the VM and executes deployment commands:
+   - Pulls the latest code from the `main` branch
+   - Stops running containers
+   - Rebuilds and restarts containers with the new code
+
+### Required Secrets
+
+For automated deployment to work, the following GitHub repository secrets must be configured:
+- `VM_SSH_KEY`: Your VM's SSH private key (ed25519 format)
+- `VM_HOST`: Your VM's IP address or hostname
+- `VM_PORT`: SSH port (typically 22)
+- `VM_USER`: SSH username for the VM
+
+### Monitoring Deployments
+
+You can monitor deployment status in the "Actions" tab of your GitHub repository. Each push to `main` will trigger a new deployment run.
+
+## Manual Deployment Update
+
+If you need to manually update the application on the VM, you can still use the [update.sh](update.sh) script:
 
 1. SSH into your VM and CD to OpenCourt/
 2. Activate and run the script
@@ -138,13 +164,48 @@ When you push new code to your repo, run the [update.sh](update.sh) script to de
 
 This will pull the latest code and rebuild only the necessary containers. Your database data will be preserved
 
-### IMPORTANT - This script does NOT apply database schema changes. To apply changes to tables, you must destroy the database volume and then run docker-compose up -d --build
+### IMPORTANT - Deployment scripts do NOT apply database schema changes. To apply changes to tables, you must destroy the database volume and then run docker-compose up -d --build
 
 - Command to destroy database volume
 
     ```bash
     docker-compose down -v
     ```
+### Continuous Integration (CI)
+
+This project uses GitHub Actions to automatically run all tests on every push and pull request.
+
+## CI Workflow
+
+The workflow is located in:
+
+.github/workflows/test.yml
+
+## What CI Runs
+
+- Backend unit tests
+
+- Backend integration tests
+
+- Frontend unit tests (Vitest)
+
+- End-to-end tests
+
+## How It Works
+
+- Checks out the repository
+
+- Sets up Node.js
+
+- Installs backend & frontend dependencies
+
+- Runs all available test scripts
+
+- Fails the workflow if any test fails
+
+## Manual Run
+
+Go to Actions -> CI - Tests -> Run CI on feature/ci-merging -> Re-run all jobs.
 
 ## Local Setup
 1. Clone the repo:
